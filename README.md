@@ -1,1 +1,0 @@
-# django-product-feedback-app
