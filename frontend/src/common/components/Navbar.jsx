@@ -1,17 +1,22 @@
 import Link from "next/link";
-import React from "react";
+import { logout } from "../../features/user";
+import { useSelector, useDispatch } from "react-redux";
 
 const Navbar = () => {
+  const { isAuthenticated } = useSelector((state) => state.user);
+
+  const dispatch = useDispatch();
+
   const authLinks = (
     <>
       <li>
-        <Link href="/login" legacyBehavior>
+        <Link href="/dashboard" legacyBehavior>
           <a>Dashboard</a>
         </Link>
       </li>
       <li>
-        <Link href="/register" legacyBehavior>
-          <a>Logout</a>
+        <Link href="/" legacyBehavior>
+          <a onClick={() => dispatch(logout())}>Logout</a>
         </Link>
       </li>
     </>
@@ -41,16 +46,7 @@ const Navbar = () => {
       </div>
       <div className="flex-none">
         <ul className="p-0 menu menu-horizontal">
-          <li>
-            <Link href="/login" legacyBehavior>
-              <a>Login</a>
-            </Link>
-          </li>
-          <li>
-            <Link href="/register" legacyBehavior>
-              <a>Register</a>
-            </Link>
-          </li>
+          {isAuthenticated ? authLinks : guestLinks}
         </ul>
       </div>
     </div>

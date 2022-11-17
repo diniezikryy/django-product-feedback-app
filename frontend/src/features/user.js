@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { API_URL } from "../config";
+import { useDispatch } from "react-redux";
+
+// Messages from api routes will be passed as redux payload!
 
 const initialState = {
   isAuthenticated: false,
@@ -41,6 +43,84 @@ export const register = createAsyncThunk(
   }
 );
 
+export const getUser = createAsyncThunk("users/me", async (_, thunkAPI) => {
+  try {
+    const apiRes = await fetch("api/users/me", {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await apiRes.json();
+
+    if (apiRes.status === 200) {
+      return data;
+    } else {
+      return thunkAPI.rejectWithValue(data);
+    }
+  } catch (err) {
+    return thunkAPI.rejectWithValue(err.response.data);
+  }
+});
+
+export const login = createAsyncThunk(
+  "users/login",
+  async ({ email, password }, thunkAPI) => {
+    const body = JSON.stringify({
+      email,
+      password,
+    });
+
+    try {
+      const res = await fetch("/api/users/login", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body,
+      });
+
+      const data = await res.json();
+
+      if (res.status === 200) {
+        const { dispatch } = thunkAPI;
+
+        dispatch(getUser());
+
+        return data;
+      } else {
+        return thunkAPI.rejectWithValue(data);
+      }
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.response.data);
+    }
+  }
+);
+
+export const logout = createAsyncThunk("users/logout", async (_, thunkAPI) => {
+  try {
+    const res = await fetch("/api/users/logout", {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+      },
+    });
+
+    const data = await res.json();
+
+    if (res.status === 200) {
+      return data;
+    } else {
+      return thunkAPI.rejectWithValue(data);
+    }
+  } catch (err) {
+    return thunkAPI.rejectWithValue(err.response.data);
+  }
+});
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -59,6 +139,37 @@ const userSlice = createSlice({
         state.registered = true;
       })
       .addCase(register.rejected, (state) => {
+        state.loading = false;
+      })
+      .addCase(login.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(login.fulfilled, (state) => {
+        state.loading = false;
+        state.isAuthenticated = true;
+      })
+      .addCase(login.rejected, (state) => {
+        state.loading = false;
+      })
+      .addCase(getUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload; // payload will be user's data
+      })
+      .addCase(getUser.rejected, (state) => {
+        state.loading = false;
+      })
+      .addCase(logout.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(logout.fulfilled, (state) => {
+        state.loading = false;
+        state.isAuthenticated = false;
+        state.user = null;
+      })
+      .addCase(logout.rejected, (state) => {
         state.loading = false;
       });
   },
