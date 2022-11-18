@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { useDispatch } from "react-redux";
 
 // Messages from api routes will be passed as redux payload!
 
@@ -21,7 +20,7 @@ export const register = createAsyncThunk(
     });
 
     try {
-      const res = await fetch("/api/users/register", {
+      const res = await fetch("/api/auth/register", {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -45,7 +44,7 @@ export const register = createAsyncThunk(
 
 export const getUser = createAsyncThunk("users/me", async (_, thunkAPI) => {
   try {
-    const apiRes = await fetch("api/users/me", {
+    const apiRes = await fetch("api/auth/me", {
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -74,7 +73,7 @@ export const login = createAsyncThunk(
     });
 
     try {
-      const res = await fetch("/api/users/login", {
+      const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -100,9 +99,68 @@ export const login = createAsyncThunk(
   }
 );
 
+export const checkAuth = createAsyncThunk(
+  "users/verify",
+  async (_, thunkAPI) => {
+    try {
+      const res = await fetch("/api/auth/verify", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await res.json();
+
+      if (res.status === 200) {
+        const { dispatch } = thunkAPI;
+
+        console.log("Passed");
+
+        dispatch(getUser());
+
+        return data;
+      } else {
+        return thunkAPI.rejectWithValue(data);
+      }
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.response.data);
+    }
+  }
+);
+
+export const refreshToken = createAsyncThunk(
+  "users/refreshToken",
+  async (_, thunkAPI) => {
+    try {
+      const res = await fetch("/api/auth/refresh", {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+        },
+      });
+
+      const data = await res.json();
+
+      if (res.status === 200) {
+        const { dispatch } = thunkAPI;
+
+        dispatch(getUser());
+
+        return data;
+      } else {
+        return thunkAPI.rejectWithValue(data);
+      }
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.response.data);
+    }
+  }
+);
+
 export const logout = createAsyncThunk("users/logout", async (_, thunkAPI) => {
   try {
-    const res = await fetch("/api/users/logout", {
+    const res = await fetch("/api/auth/logout", {
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -170,6 +228,26 @@ const userSlice = createSlice({
         state.user = null;
       })
       .addCase(logout.rejected, (state) => {
+        state.loading = false;
+      })
+      .addCase(checkAuth.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(checkAuth.fulfilled, (state) => {
+        state.loading = false;
+        state.isAuthenticated = true;
+      })
+      .addCase(checkAuth.rejected, (state) => {
+        state.loading = false;
+      })
+      .addCase(refreshToken.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(refreshToken.fulfilled, (state) => {
+        state.loading = false;
+        state.isAuthenticated = true;
+      })
+      .addCase(refreshToken.rejected, (state) => {
         state.loading = false;
       });
   },

@@ -13,7 +13,9 @@ const LoginPage = () => {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const { loading } = useSelector((state) => state.user);
+  const { loading, isAuthenticated, registered } = useSelector(
+    (state) => state.user
+  );
   const { email, password } = formData;
 
   const onChange = (e) =>
@@ -25,9 +27,13 @@ const LoginPage = () => {
     dispatch(login({ email, password }));
   };
 
+  if (isAuthenticated) {
+    router.push("/dashboard");
+  }
+
   useEffect(() => {
     dispatch(resetRegistered());
-  }, []);
+  }, [registered]);
 
   return (
     <BaseLayout title="Product Feedback | Login" content="Login page">

@@ -1,6 +1,8 @@
 import "../styles/globals.css";
-import { Provider } from "react-redux";
+import { Provider, useDispatch } from "react-redux";
+import { useEffect } from "react";
 import store from "../../store";
+import { checkAuth } from "../features/user";
 
 function MyApp({ Component, pageProps }) {
   return (
