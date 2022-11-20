@@ -27,6 +27,8 @@ const LoginPage = () => {
     dispatch(login({ email, password }));
   };
 
+  console.log(router.query.from);
+
   if (isAuthenticated) {
     if (router.query.from) {
       router.push(router.query.from);

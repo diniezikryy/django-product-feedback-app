@@ -3,6 +3,7 @@ import BaseLayout from "../common/layouts/BaseLayout";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { refreshToken } from "../features/user";
+import withAuth from "../common/components/withAuth";
 
 const ProtectedPage = () => {
   const router = useRouter();
@@ -16,14 +17,14 @@ const ProtectedPage = () => {
 
   const { loading, isAuthenticated, user } = useSelector((state) => state.user);
 
-  useEffect(() => {
+  /* useEffect(() => {
     if (!isAuthenticated && !loading && user === null) {
       router.push({
         pathname: "/login",
         query: { from: router.pathname },
       });
     }
-  }, []);
+  }, []); */
 
   return (
     <>
@@ -48,4 +49,4 @@ const ProtectedPage = () => {
   );
 };
 
-export default ProtectedPage;
+export default withAuth(ProtectedPage);
