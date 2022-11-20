@@ -116,8 +116,6 @@ export const checkAuth = createAsyncThunk(
       if (res.status === 200) {
         const { dispatch } = thunkAPI;
 
-        console.log("Passed");
-
         dispatch(getUser());
 
         return data;

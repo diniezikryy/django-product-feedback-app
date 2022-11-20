@@ -28,7 +28,11 @@ const LoginPage = () => {
   };
 
   if (isAuthenticated) {
-    router.push("/dashboard");
+    if (router.query.from) {
+      router.push(router.query.from);
+    } else {
+      router.push("/dashboard");
+    }
   }
 
   useEffect(() => {

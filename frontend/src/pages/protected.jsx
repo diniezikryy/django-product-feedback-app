@@ -4,10 +4,8 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { refreshToken } from "../features/user";
 
-const DashboardPage = () => {
+const ProtectedPage = () => {
   const router = useRouter();
-
-  const { user, loading, isAuthenticated } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
 
@@ -16,9 +14,14 @@ const DashboardPage = () => {
       dispatch(refreshToken());
   }, [dispatch]);
 
+  const { loading, isAuthenticated, user } = useSelector((state) => state.user);
+
   useEffect(() => {
     if (!isAuthenticated && !loading && user === null) {
-      router.push("/login");
+      router.push({
+        pathname: "/login",
+        query: { from: router.pathname },
+      });
     }
   }, []);
 
@@ -28,19 +31,13 @@ const DashboardPage = () => {
         <div className="hero h-[calc(100vh-64px)] bg-base-200">
           <div className="text-center hero-content">
             <div className="max-w-md">
-              {loading || user === null ? (
+              {loading === null ? (
                 <button className="btn btn-square loading"></button>
               ) : (
                 <div>
-                  <h1 className="text-5xl font-bold">Dashboard Page</h1>
-                  <div className="mt-5 shadow-xl card w-96 bg-base-100">
-                    <div className="card-body">
-                      <h2 className="card-title">User Details</h2>
-                      <p>First Name: {user.first_name}</p>
-                      <p>Last Name: {user.last_name}</p>
-                      <p>Email: {user.email}</p>
-                    </div>
-                  </div>
+                  <h1 className="text-5xl font-bold">
+                    This is a protected page
+                  </h1>
                 </div>
               )}
             </div>
@@ -51,4 +48,4 @@ const DashboardPage = () => {
   );
 };
 
-export default DashboardPage;
+export default ProtectedPage;
