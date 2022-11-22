@@ -9,11 +9,10 @@ from users.serializers import UserSerializer
        
 class FeedbackSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
-    comments = CommentSerializer(read_only=True)
 
     class Meta:
        model = Feedback
-       fields = ['id', 'title', 'category', 'upvotes', 'status', 'description','user', 'comments']
+       fields = ['id', 'title', 'category', 'upvotes', 'status', 'description','user']
 
     def create(self, validated_data):
         request = self.context['request']
@@ -76,8 +75,16 @@ class FeedbackSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
-    feedback = FeedbackSerializer(read_only=True)
+    feedback = serializers.PrimaryKeyRelatedField(queryset=Feedback.objects.all()) # should only be id of the feedback
 
     class Meta:
         model = Comment
         fields = ['id', 'feedback', 'content', 'user']
+
+class FeedbackDetailSerializer(serializers.ModelSerializer):
+    comments = CommentSerializer(many=True)
+    user = UserSerializer(read_only=True)
+
+    class Meta:
+        model = Feedback
+        fields = ['id', 'title', 'category', 'upvotes', 'status', 'description', 'comments','user']

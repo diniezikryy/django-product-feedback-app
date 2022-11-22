@@ -14,8 +14,8 @@ class Feedback(models.Model):
     user = models.ForeignKey(UserAccount, null=True, on_delete=models.SET_NULL, related_name="feedbacks")
 
 class Comment(models.Model):
-    feedback = models.ForeignKey(Feedback, null=True,on_delete=models.SET_NULL, related_name="feedback_comments")
-    user = models.ForeignKey(UserAccount, null=True,on_delete=models.CASCADE, related_name="user_comments")
+    feedback = models.ForeignKey(Feedback, null=True,on_delete=models.SET_NULL, related_name="comments")
+    user = models.ForeignKey(UserAccount, null=True,on_delete=models.CASCADE)
     content =  models.CharField(blank=False, max_length=255)
 
 
