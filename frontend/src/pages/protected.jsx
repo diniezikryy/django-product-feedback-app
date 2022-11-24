@@ -10,21 +10,7 @@ const ProtectedPage = () => {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (dispatch && dispatch !== null && dispatch !== undefined)
-      dispatch(refreshToken());
-  }, [dispatch]);
-
-  const { loading, isAuthenticated, user } = useSelector((state) => state.user);
-
-  /* useEffect(() => {
-    if (!isAuthenticated && !loading && user === null) {
-      router.push({
-        pathname: "/login",
-        query: { from: router.pathname },
-      });
-    }
-  }, []); */
+  const { loading } = useSelector((state) => state.user);
 
   return (
     <>

@@ -8,12 +8,12 @@ const withAuth = (Component) => {
     const router = useRouter();
     const dispatch = useDispatch();
 
+    const { isAuthenticated, loading } = useSelector((state) => state.user);
+
     useEffect(() => {
       if (dispatch && dispatch !== null && dispatch !== undefined)
         dispatch(refreshToken());
     }, [dispatch]);
-
-    const { isAuthenticated } = useSelector((state) => state.user);
 
     useEffect(() => {
       if (!isAuthenticated) {

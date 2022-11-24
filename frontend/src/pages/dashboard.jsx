@@ -3,6 +3,8 @@ import BaseLayout from "../common/layouts/BaseLayout";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { refreshToken } from "../features/user";
+import withAuth from "../common/components/withAuth";
+import { useGetAllFeedbacksQuery } from "../services/feedbacks";
 
 const DashboardPage = () => {
   const router = useRouter();
@@ -11,16 +13,22 @@ const DashboardPage = () => {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (dispatch && dispatch !== null && dispatch !== undefined)
-      dispatch(refreshToken());
-  }, [dispatch]);
+  /* useEffect(async () => {
+    const apiRes = await fetch("/api/feedbacks/getAllFeedbacks", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-  useEffect(() => {
-    if (!isAuthenticated && !loading && user === null) {
-      router.push("/login");
-    }
-  }, []);
+    const data = apiRes.json();
+
+    console.log(data);
+  }, []); */
+
+  const { data, error, isLoading } = useGetAllFeedbacksQuery();
+
+  if (isLoading) return <div>Loading...</div>;
 
   return (
     <>
@@ -51,4 +59,4 @@ const DashboardPage = () => {
   );
 };
 
-export default DashboardPage;
+export default withAuth(DashboardPage);
