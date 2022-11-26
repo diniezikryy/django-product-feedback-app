@@ -1,15 +1,27 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+export const getAllFeedbacks = async () => {
+  const apiRes = await fetch(
+    "http://localhost:3000/api/feedbacks/getAllFeedbacks",
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
 
-export const feedbacksAPI = createApi({
-  reducerPath: "feedbacksApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:3000/api/feedbacks/",
-  }),
-  endpoints: (builder) => ({
-    getAllFeedbacks: builder.query({
-      query: () => `getAllFeedbacks`,
-    }),
-  }),
-});
+  const data = await apiRes.json();
 
-export const { useGetAllFeedbacksQuery } = feedbacksAPI;
+  return data;
+};
+
+export const getIndFeedback = async (feedback_id) => {
+  const apiRes = await fetch(
+    `http://localhost:3000/api/feedbacks/getIndFeedback/${feedback_id}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+};

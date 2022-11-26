@@ -1,14 +1,20 @@
 import "../styles/globals.css";
-import { Provider, useDispatch } from "react-redux";
-import { useEffect } from "react";
-import store from "../../store";
-import { checkAuth } from "../features/user";
+import { Provider } from "react-redux";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-function MyApp({ Component, pageProps }) {
+const { wrapper } = require("../../store");
+
+function MyApp({ Component, ...rest }) {
+  const { store, props } = wrapper.useWrappedStore(rest);
+  const { pageProps } = props;
+  const queryClient = new QueryClient();
+
   return (
-    <Provider store={store}>
-      <Component {...pageProps} />
-    </Provider>
+    <QueryClientProvider client={queryClient}>
+      <Provider store={store}>
+        <Component {...pageProps} />
+      </Provider>
+    </QueryClientProvider>
   );
 }
 
