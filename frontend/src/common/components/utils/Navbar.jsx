@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { logout } from "../../features/user";
+import { logout } from "../../../features/user";
 import { useSelector, useDispatch } from "react-redux";
 
 const Navbar = () => {
-  const { isAuthenticated } = useSelector((state) => state.user);
+  const { isAuthenticated, user } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
 

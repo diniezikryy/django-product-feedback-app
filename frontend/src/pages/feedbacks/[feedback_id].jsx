@@ -1,18 +1,34 @@
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import Comment from "../../common/components/FeedbackDetailPage/Comment";
+import FeedbackDetailCard from "../../common/components/FeedbackDetailPage/FeedbackDetailCard";
 import BaseLayout from "../../common/layouts/BaseLayout";
+import { refreshToken } from "../../features/user";
 import { getAllFeedbacks, getIndFeedback } from "../../services/feedbacks";
 
 const FeedbackDetailPage = ({ feedback }) => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (dispatch && dispatch !== null && dispatch !== undefined)
+      dispatch(refreshToken());
+  }, [dispatch]);
+
   return (
     <BaseLayout
       title="Product Feedback | Feedback Title"
       description="Feedback Description"
     >
-      <div className="shadow-xl card w-96 bg-base-100">
-        <div className="card-body">
-          <h2 className="card-title">{feedback.title}</h2>
-          <p>{feedback.description}</p>
-          <div className="justify-end card-actions">
-            <button className="btn btn-primary">Comment</button>
+      <div className="grid w-full h-[calc(100vh-64px)] bg-base-200 p-6">
+        <div className="w-full">
+          <FeedbackDetailCard feedback={feedback} />
+
+          <div className="mt-6 divider">Comments</div>
+
+          <div className="w-full">
+            {feedback.comments.map((comment) => (
+              <Comment comment={comment} key={comment.id} />
+            ))}
           </div>
         </div>
       </div>
