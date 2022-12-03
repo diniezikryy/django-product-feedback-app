@@ -1,8 +1,6 @@
 import React from "react";
 
 const FeedbackDetailCard = ({ feedback }) => {
-  console.log(feedback);
-
   return (
     <>
       <div className="mt-6 shadow-xl card bg-base-100">

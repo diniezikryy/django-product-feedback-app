@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { refreshToken } from "../features/user";
+import Link from "next/link";
 
 const HomePage = ({ feedbacks }) => {
   const [feedbacksList, setFeedbacksList] = useState(feedbacks);
@@ -78,7 +79,7 @@ const HomePage = ({ feedbacks }) => {
                 }}
                 className="w-full max-w-xs select select-bordered"
               >
-                <option disabled selected>
+                <option disabled defaultValue>
                   Sort By:
                 </option>
                 <option>Upvotes</option>
@@ -91,7 +92,7 @@ const HomePage = ({ feedbacks }) => {
                   setFilterType(e.target.value);
                 }}
               >
-                <option disabled selected>
+                <option disabled defaultValue>
                   Filter By:
                 </option>
                 <option value="">All</option>
@@ -104,7 +105,7 @@ const HomePage = ({ feedbacks }) => {
 
               {user ? (
                 <button className="ml-auto btn btn-primary">
-                  + Add Feedback
+                  <Link href={`/feedbacks/addFeedback`}>+ Add Feedback</Link>
                 </button>
               ) : (
                 <div
@@ -113,7 +114,7 @@ const HomePage = ({ feedbacks }) => {
                 >
                   <button
                     className=" btn btn-disabled"
-                    tabindex="-1"
+                    tabIndex="-1"
                     role="button"
                     aria-disabled="true"
                   >
