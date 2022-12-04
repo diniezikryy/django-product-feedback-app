@@ -13,9 +13,13 @@ class Feedback(models.Model):
     description = models.CharField(blank=True, max_length=255)
     user = models.ForeignKey(UserAccount, null=True, on_delete=models.SET_NULL, related_name="feedbacks")
 
+    def __str__(self):
+        return self.title
+
 class Comment(models.Model):
     feedback = models.ForeignKey(Feedback, null=True,on_delete=models.SET_NULL, related_name="comments")
     user = models.ForeignKey(UserAccount, null=True,on_delete=models.CASCADE)
     content =  models.CharField(blank=False, max_length=255)
 
-
+    def __str__(self):
+        return self.content

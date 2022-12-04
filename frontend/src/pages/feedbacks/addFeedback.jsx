@@ -14,7 +14,31 @@ const AddFeedbackPage = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async (data) => {
+    const { title, category, status, description } = data;
+
+    const body = JSON.stringify({
+      title,
+      category,
+      status,
+      description,
+    });
+
+    const res = await fetch("http://localhost:3000/api/feedbacks/addFeedback", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body,
+    });
+
+    const respData = await res.json();
+
+    if (res.status === 201) {
+      return respData;
+    }
+  };
 
   return (
     <BaseLayout title="Product Feedback | Add Feedback" content="Add Feedback">

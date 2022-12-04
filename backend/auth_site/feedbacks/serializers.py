@@ -37,12 +37,12 @@ class FeedbackSerializer(serializers.ModelSerializer):
         description = attempt_json_deserialize(description, expect_type=str)
         validated_data['description'] = description
 
-        # user_pk = request.data.get("user")
-        # user_pk = attempt_json_deserialize(user_pk, expect_type=int)
         user = self.context['request'].user
-        validated_data['user_pk'] = user
+        validated_data['user'] = user
 
         instance = super().create(validated_data)
+
+        return instance
 
     def update(self, validated_data):
         request = self.context['request']
@@ -73,7 +73,6 @@ class FeedbackSerializer(serializers.ModelSerializer):
 
         instance = super().update(instance, validated_data)
         
-
 class CommentSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
     feedback = serializers.PrimaryKeyRelatedField(queryset=Feedback.objects.all()) # should only be id of the feedback
