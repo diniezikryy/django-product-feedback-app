@@ -56,6 +56,23 @@ const EditFeedbackPage = () => {
     }
   };
 
+  const handleDelete = async () => {
+    const res = await fetch(
+      `http://localhost:3000/api/feedbacks/deleteFeedback/${feedback.id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const respData = await res.json();
+
+    router.push("/");
+  };
+
   return (
     <BaseLayout title="Product Feedback | Edit Feedback" content="Edd Feedback">
       <div className="hero h-[calc(100vh-64px)] bg-base-200">
@@ -169,6 +186,41 @@ const EditFeedbackPage = () => {
                     </span>
                   </label>
                 )}
+              </div>
+
+              {/* Put this part before </body> tag */}
+              {/* The button to open modal */}
+              <label htmlFor="my-modal-3" className="mt-6 btn btn-error">
+                Delete feedback
+              </label>
+
+              {/* Put this part before </body> tag */}
+              <input type="checkbox" id="my-modal-3" className="modal-toggle" />
+              <div className="modal">
+                <div className="relative modal-box">
+                  <label
+                    htmlFor="my-modal-3"
+                    className="absolute btn btn-sm btn-circle right-2 top-2"
+                  >
+                    ✕
+                  </label>
+                  <h3 className="text-lg font-bold">
+                    Confirm deletion of feedback
+                  </h3>
+                  <p className="py-4">
+                    Are you sure you want to delete this feedback?
+                  </p>
+
+                  <div className="modal-action">
+                    <label
+                      htmlFor="my-modal"
+                      className="btn btn-error"
+                      onClick={handleDelete}
+                    >
+                      Delete feedback
+                    </label>
+                  </div>
+                </div>
               </div>
 
               <input type="submit" className="mt-6 btn btn-primary" />

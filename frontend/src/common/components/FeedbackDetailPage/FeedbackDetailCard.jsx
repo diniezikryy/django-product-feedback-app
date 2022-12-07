@@ -14,16 +14,18 @@ const FeedbackDetailCard = ({ feedback }) => {
               {feedback.title}
               {loading || user === null ? null : user.email ===
                 feedback.user.email ? (
-                <button className="ml-auto btn btn-secondary">
-                  <Link
-                    href={{
-                      pathname: `/feedbacks/editFeedback`,
-                      query: feedback,
-                    }}
-                  >
-                    Edit Feedback
-                  </Link>
-                </button>
+                <>
+                  <button className="ml-auto btn btn-secondary">
+                    <Link
+                      href={{
+                        pathname: `/feedbacks/editFeedback`,
+                        query: feedback,
+                      }}
+                    >
+                      Edit Feedback
+                    </Link>
+                  </button>
+                </>
               ) : null}
               <div className="flex flex-col items-center max-w-fit btn">
                 <svg
