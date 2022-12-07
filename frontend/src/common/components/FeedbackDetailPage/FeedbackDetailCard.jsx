@@ -1,6 +1,10 @@
-import React from "react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 const FeedbackDetailCard = ({ feedback }) => {
+  const { user, loading } = useSelector((state) => state.user);
+
   return (
     <>
       <div className="mt-6 shadow-xl card bg-base-100">
@@ -8,6 +12,19 @@ const FeedbackDetailCard = ({ feedback }) => {
           <div className="card-body">
             <h2 className="justify-between card-title">
               {feedback.title}
+              {loading || user === null ? null : user.email ===
+                feedback.user.email ? (
+                <button className="ml-auto btn btn-secondary">
+                  <Link
+                    href={{
+                      pathname: `/feedbacks/editFeedback`,
+                      query: feedback,
+                    }}
+                  >
+                    Edit Feedback
+                  </Link>
+                </button>
+              ) : null}
               <div className="flex flex-col items-center max-w-fit btn">
                 <svg
                   width="10"

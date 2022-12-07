@@ -44,7 +44,7 @@ export const register = createAsyncThunk(
 
 export const getUser = createAsyncThunk("users/me", async (_, thunkAPI) => {
   try {
-    const apiRes = await fetch("api/auth/me", {
+    const apiRes = await fetch("/api/auth/me", {
       method: "GET",
       headers: {
         Accept: "application/json",
