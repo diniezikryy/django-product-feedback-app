@@ -82,6 +82,49 @@ class CommentSerializer(serializers.ModelSerializer):
         model = Comment
         fields = ['id', 'feedback', 'content', 'user']
 
+    def create(self, validated_data):
+        request = self.context['request']
+
+        feedback = request.data.get("feedback")
+        feedback = attempt_json_deserialize(feedback, expect_type=int)
+        feedback = Feedback.objects.get(pk=feedback)
+        validated_data['feedback'] = feedback
+
+        content = request.data.get("content")
+        content = attempt_json_deserialize(content, expect_type=str)
+        validated_data['content'] = content
+
+        user = self.context['request'].user
+        validated_data['user'] = user
+
+        instance = super().create(validated_data)
+
+        return instance
+
+    def update(self, instance, validated_data):
+        """
+        Comment ID must correctly relate to the feedback ID
+        """
+        request = self.context['request']
+        
+        feedback = request.data.get("feedback")
+        feedback = attempt_json_deserialize(feedback, expect_type=int)
+        feedback = Feedback.objects.get(pk=feedback)
+        validated_data['feedback'] = feedback
+
+        content = request.data.get("content")
+        content = attempt_json_deserialize(content, expect_type=str)
+        validated_data['content'] = content
+
+        user = self.context['request'].user
+        validated_data['user'] = user
+
+        instance = super().update(instance, validated_data)
+
+        return instance
+
+    
+
 class FeedbackDetailSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True)
     user = UserSerializer(read_only=True)
