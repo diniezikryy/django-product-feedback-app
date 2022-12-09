@@ -1,13 +1,20 @@
-import { useEffect } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import Comment from "../../common/components/FeedbackDetailPage/Comment";
+import CommentsContainer from "../../common/components/FeedbackDetailPage/CommentsContainer";
 import FeedbackDetailCard from "../../common/components/FeedbackDetailPage/FeedbackDetailCard";
 import BaseLayout from "../../common/layouts/BaseLayout";
 import { refreshToken } from "../../features/user";
 import { getAllFeedbacks, getIndFeedback } from "../../services/feedbacks";
 
 const FeedbackDetailPage = ({ feedback }) => {
+  const [comments, setComments] = useState([...feedback.comments]);
+
   const dispatch = useDispatch();
+  const router = useRouter();
+
+  console.log(router.query);
 
   useEffect(() => {
     if (dispatch && dispatch !== null && dispatch !== undefined)
@@ -25,11 +32,7 @@ const FeedbackDetailPage = ({ feedback }) => {
 
           <div className="mt-6 divider">Comments</div>
 
-          <div className="w-full">
-            {feedback.comments.map((comment) => (
-              <Comment comment={comment} key={comment.id} />
-            ))}
-          </div>
+          <CommentsContainer comments={comments} />
         </div>
       </div>
     </BaseLayout>

@@ -1,16 +1,26 @@
 import Link from "next/link";
 import { logout } from "../../../features/user";
 import { useSelector, useDispatch } from "react-redux";
+import { useRouter } from "next/router";
 
 const Navbar = () => {
   const { isAuthenticated, user } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
+  const router = useRouter();
+
+  console.log(router.pathname);
 
   const authLinks = (
     <>
       <li>
-        <Link href="/dashboard" legacyBehavior>
+        <Link
+          href={{
+            pathname: "/login",
+            query: { from: router.pathname },
+          }}
+          legacyBehavior
+        >
           <a>Dashboard</a>
         </Link>
       </li>
