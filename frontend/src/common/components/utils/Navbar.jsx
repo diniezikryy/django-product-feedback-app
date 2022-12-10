@@ -14,7 +14,7 @@ const Navbar = () => {
       <li>
         <Link
           href={{
-            pathname: "/login",
+            pathname: "/dashboard",
             query: { from: router.pathname },
           }}
           legacyBehavior

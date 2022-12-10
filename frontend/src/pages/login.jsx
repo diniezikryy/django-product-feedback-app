@@ -39,8 +39,6 @@ const LoginPage = () => {
     dispatch(resetRegistered());
   }, [registered]);
 
-  console.log(router.query.from);
-
   return (
     <BaseLayout title="Product Feedback | Login" content="Login page">
       <div className="hero h-[calc(100vh-64px)] bg-base-200">

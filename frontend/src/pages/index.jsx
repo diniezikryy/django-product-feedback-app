@@ -16,6 +16,7 @@ const HomePage = ({ feedbacks }) => {
   const [filterType, setFilterType] = useState("");
 
   const dispatch = useDispatch();
+
   const { data, isError, isLoading, error } = useQuery({
     queryKey: ["feedbacks"],
     queryFn: getAllFeedbacks,
