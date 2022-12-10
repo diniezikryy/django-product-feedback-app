@@ -14,12 +14,12 @@ const FeedbackDetailPage = ({ feedback }) => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  console.log(router.query);
-
   useEffect(() => {
     if (dispatch && dispatch !== null && dispatch !== undefined)
       dispatch(refreshToken());
   }, [dispatch]);
+
+  console.log(comments);
 
   return (
     <BaseLayout
@@ -28,11 +28,11 @@ const FeedbackDetailPage = ({ feedback }) => {
     >
       <div className="grid w-full h-[calc(100vh-64px)] bg-base-200 p-6">
         <div className="w-full">
-          <FeedbackDetailCard feedback={feedback} />
+          <FeedbackDetailCard feedback={feedback} comments={comments} />
 
           <div className="mt-6 divider">Comments</div>
 
-          <CommentsContainer comments={comments} />
+          <CommentsContainer comments={comments} setComments={setComments} />
         </div>
       </div>
     </BaseLayout>

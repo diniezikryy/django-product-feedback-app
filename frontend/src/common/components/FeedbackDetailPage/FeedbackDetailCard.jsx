@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
-const FeedbackDetailCard = ({ feedback }) => {
+const FeedbackDetailCard = ({ feedback, comments }) => {
   const { user, loading } = useSelector((state) => state.user);
 
   return (
@@ -47,7 +47,7 @@ const FeedbackDetailCard = ({ feedback }) => {
             </h2>
             <div className="flex">{feedback.description}</div>
             <div className="items-center max-w-fit btn">
-              <div className="mr-2">{feedback.comments.length}</div>
+              <div className="mr-2">{comments.length}</div>
               <span>
                 <svg width="18" height="16" xmlns="http://www.w3.org/2000/svg">
                   <path

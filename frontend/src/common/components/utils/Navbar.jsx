@@ -9,8 +9,6 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  console.log(router.pathname);
-
   const authLinks = (
     <>
       <li>

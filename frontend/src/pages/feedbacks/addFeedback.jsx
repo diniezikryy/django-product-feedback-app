@@ -139,7 +139,7 @@ const AddFeedbackPage = () => {
                   type="text"
                   placeholder="Description"
                   className={`w-full textarea textarea-bordered ${
-                    errors.title && "textarea-error"
+                    errors.description && "textarea-error"
                   }`}
                   {...register("description", { required: true })}
                 />
