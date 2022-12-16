@@ -14,7 +14,7 @@ SECRET_KEY = 'django-insecure-kveh)f3m$jfk)kypcvp@$w+_9l*dbxma^uke*xzxh@79jy%ts8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -29,9 +29,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -68,9 +70,9 @@ WSGI_APPLICATION = 'auth_site.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'django-feedback', 
-        'USER': 'postgres',
-        'PASSWORD': 'Dzrdin2305*',
+        'NAME': 'product-feedback', 
+        'USER': 'dinie',
+        'PASSWORD': 'Beefisfat123*',
         'HOST': '127.0.0.1', 
         'PORT': '5432',
     }
@@ -132,3 +134,8 @@ SIMPLE_JWT = {
 }
 
 AUTH_USER_MODEL = 'users.UserAccount'
+
+CORS_ALLOWED_ORIGINS = (
+    'http://localhost',
+    'http://127.0.0.1',
+)

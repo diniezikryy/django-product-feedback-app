@@ -1,9 +1,7 @@
-import { API_URL } from "../../../config/index";
-
 export default async (req, res) => {
   if (req.method === "GET") {
     try {
-      const apiRes = await fetch(`${API_URL}/api/feedbacks/feedbacks`, {
+      const apiRes = await fetch(`${process.env.API_URL}/api/feedbacks/feedbacks`, {
         method: "GET",
         headers: {
           Accept: "application/json",

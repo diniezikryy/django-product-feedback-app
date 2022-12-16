@@ -24,6 +24,7 @@ const HomePage = ({ feedbacks }) => {
   });
   const { user } = useSelector((state) => state.user);
 
+
   useEffect(() => {
     if (dispatch && dispatch !== null && dispatch !== undefined)
       dispatch(refreshToken());
@@ -73,12 +74,12 @@ const HomePage = ({ feedbacks }) => {
       <BaseLayout title="Product Feedback | Home" content="Homepage">
         <div className="grid w-full h-[calc(100vh-64px)] bg-base-200 pt-0">
           <div className="w-full p-6">
-            <div className="flex">
+            <div className="flex flex-col items-center sm:flex-row">
               <select
                 onChange={(e) => {
                   setSortType(e.target.value);
                 }}
-                className="w-full max-w-xs select select-bordered"
+                className="w-full sm:max-w-xs select select-bordered"
               >
                 <option disabled defaultValue>
                   Sort By:
@@ -88,7 +89,7 @@ const HomePage = ({ feedbacks }) => {
               </select>
 
               <select
-                className="w-full max-w-xs ml-6 select select-bordered"
+                className="w-full sm:max-w-xs sm:ml-6 select select-bordered mt-6 sm:mt-0"
                 onChange={(e) => {
                   setFilterType(e.target.value);
                 }}
@@ -105,7 +106,7 @@ const HomePage = ({ feedbacks }) => {
               </select>
 
               {user ? (
-                <button className="ml-auto btn btn-primary">
+                <button className="sm:ml-auto btn w-full sm:w-fit btn-primary mt-6 sm:mt-0">
                   <Link href={`/feedbacks/addFeedback`}>+ Add Feedback</Link>
                 </button>
               ) : (
